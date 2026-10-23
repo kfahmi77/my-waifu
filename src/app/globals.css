@@ -1,26 +1,343 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-hand: var(--font-caveat);
+  --font-body: var(--font-nunito);
+
+  --color-ink: #3a2e28;
+  --color-ink-soft: #6b5d53;
+  --color-paper: #f4ecdd;
+  --color-rose-ink: #a8405b;
+  --color-sage: #7c8a5a;
+  --color-tape: #e9dcc2;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  /* Warna tinta & kertas, bukan candy-pink */
+  --ink: #3a2e28;
+  --ink-soft: #6b5d53;
+  --rose-ink: #a8405b;
+  --sage: #7c8a5a;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--ink);
+  font-family: var(--font-nunito), system-ui, sans-serif;
+  overflow-x: hidden;
+  /* Kertas tua: gradien lembut + bercak kopi/noda samar supaya terasa nyata */
+  background-color: #efe6d4;
+  background-image:
+    radial-gradient(
+      circle at 18% 22%,
+      rgba(168, 64, 91, 0.06) 0,
+      transparent 42%
+    ),
+    radial-gradient(
+      circle at 82% 78%,
+      rgba(124, 138, 90, 0.07) 0,
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at 70% 15%,
+      rgba(120, 85, 50, 0.05) 0,
+      transparent 30%
+    );
+}
+
+/* Tekstur serat kertas halus menutupi seluruh layar */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+}
+
+/* ---- Tipografi tulisan tangan ---- */
+.handwriting {
+  font-family: var(--font-caveat), cursive;
+  line-height: 1.05;
+}
+
+/* ---- Selotip kertas (washi tape) ---- */
+.tape {
+  position: absolute;
+  width: 92px;
+  height: 26px;
+  background: rgba(233, 220, 194, 0.85);
+  box-shadow: 0 1px 3px rgba(58, 46, 40, 0.18);
+  /* tepi selotip yang sedikit tidak rata */
+  clip-path: polygon(
+    2% 12%,
+    98% 4%,
+    100% 90%,
+    4% 96%
+  );
+}
+.tape::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.25) 0 6px,
+    transparent 6px 12px
+  );
+}
+
+/* ---- Kartu kertas dengan tepi tidak sempurna ---- */
+.paper {
+  background: #fbf6ea;
+  border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+  box-shadow:
+    0 2px 2px rgba(58, 46, 40, 0.04),
+    0 10px 30px rgba(58, 46, 40, 0.14);
+}
+
+/* Garis buku catatan samar di belakang teks surat */
+.ruled {
+  background-image: repeating-linear-gradient(
+    transparent 0 31px,
+    rgba(120, 110, 95, 0.18) 31px 32px
+  );
+}
+
+/* ---- Rotasi organik kecil, tiap elemen tidak lurus sempurna ---- */
+.tilt-l {
+  transform: rotate(-1.4deg);
+}
+.tilt-r {
+  transform: rotate(1.2deg);
+}
+.tilt-l2 {
+  transform: rotate(-0.7deg);
+}
+
+/* ---- Garis bawah coretan tangan (underline tinta) ---- */
+.ink-underline {
+  position: relative;
+  display: inline-block;
+}
+.ink-underline::after {
+  content: "";
+  position: absolute;
+  left: -2%;
+  bottom: -6px;
+  width: 104%;
+  height: 7px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='8'%3E%3Cpath d='M1 5 C 25 1, 45 8, 70 3 S 110 1, 119 4' stroke='%23a8405b' stroke-width='2.4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")
+    no-repeat center / 100% 100%;
+}
+
+/* ---- Animasi masuk yang lembut, seperti kertas diletakkan ---- */
+@keyframes settle {
+  0% {
+    transform: translateY(14px) rotate(-2deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0) rotate(0);
+    opacity: 1;
+  }
+}
+.settle {
+  animation: settle 0.55s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+}
+
+/* ---- Goyangan tangan halus (untuk accent, bukan loop berat) ---- */
+@keyframes sway {
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+}
+.sway {
+  animation: sway 4.5s ease-in-out infinite;
+  transform-origin: top center;
+}
+
+/* ---- Detak lembut untuk hati tinta ---- */
+@keyframes thump {
+  0%,
+  100% {
+    transform: scale(1) rotate(-4deg);
+  }
+  20% {
+    transform: scale(1.08) rotate(-4deg);
+  }
+  40% {
+    transform: scale(1) rotate(-4deg);
+  }
+}
+.thump {
+  animation: thump 2.4s ease-in-out infinite;
+}
+
+/* ---- Caret mesin tik untuk surat ---- */
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+.caret {
+  animation: blink 1s step-end infinite;
+}
+
+/* ---- Kartu flip (alasan) ---- */
+.flip-card {
+  perspective: 1000px;
+}
+.flip-inner {
+  transition: transform 0.55s cubic-bezier(0.2, 0.8, 0.3, 1);
+  transform-style: preserve-3d;
+}
+.flip-card.flipped .flip-inner {
+  transform: rotateY(180deg);
+}
+.flip-face {
+  backface-visibility: hidden;
+}
+.flip-back {
+  transform: rotateY(180deg);
+}
+
+/* ---- Daun / kelopak yang hanyut turun (pengganti floating hearts) ---- */
+@keyframes drift {
+  0% {
+    transform: translateY(-8vh) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.7;
+  }
+  90% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(110vh) translateX(var(--drift-x, 40px))
+      rotate(360deg);
+    opacity: 0;
+  }
+}
+.drifting {
+  position: fixed;
+  top: -40px;
+  pointer-events: none;
+  animation: drift linear infinite;
+  z-index: 0;
+}
+
+/* ---- Confetti kertas (potongan sobekan) ---- */
+@keyframes scatter {
+  0% {
+    transform: translate(0, 0) rotate(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--dx), var(--dy)) rotate(540deg);
+    opacity: 0;
+  }
+}
+.confetti {
+  position: fixed;
+  left: 50%;
+  top: 42%;
+  pointer-events: none;
+  animation: scatter 2s ease-out forwards;
+  z-index: 50;
+}
+
+/* ---- Slider bergaya garis tinta ---- */
+.ink-range {
+  appearance: none;
+  height: 22px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='10' preserveAspectRatio='none'%3E%3Cpath d='M2 6 C 60 2, 120 9, 180 5 S 270 3, 298 6' stroke='%236b5d53' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")
+    no-repeat center / 100% 10px;
+  cursor: pointer;
+}
+.ink-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 48% 52% 45% 55%;
+  background: #a8405b;
+  border: 2px solid #fbf6ea;
+  box-shadow: 0 1px 3px rgba(58, 46, 40, 0.35);
+}
+.ink-range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 48% 52% 45% 55%;
+  background: #a8405b;
+  border: 2px solid #fbf6ea;
+  box-shadow: 0 1px 3px rgba(58, 46, 40, 0.35);
+}
+.ink-range:focus-visible {
+  outline: 2px solid #a8405b;
+  outline-offset: 4px;
+}
+
+/* bayangan kupon di wrapper, karena mask memotong box-shadow */
+.ticket-wrap {
+  filter: drop-shadow(0 3px 6px rgba(58, 46, 40, 0.13));
+}
+
+/* ---- Kupon sobek: lubang setengah lingkaran di kedua sisi ---- */
+.ticket {
+  background: #fffdf6;
+  -webkit-mask:
+    radial-gradient(circle 8px at 0 50%, transparent 98%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle 8px at 100% 50%, transparent 98%, #000) right / 51% 100% no-repeat;
+  mask:
+    radial-gradient(circle 8px at 0 50%, transparent 98%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle 8px at 100% 50%, transparent 98%, #000) right / 51% 100% no-repeat;
+}
+.ticket:disabled {
+  cursor: default;
+  background: #f4ecdd;
+}
+
+/* ---- Cap stempel "diklaim" ---- */
+@keyframes stamp {
+  0% {
+    transform: translateY(-50%) rotate(-14deg) scale(1.8);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(-50%) rotate(-14deg) scale(1);
+    opacity: 0.85;
+  }
+}
+.stamp {
+  transform: translateY(-50%) rotate(-14deg);
+  opacity: 0.85;
+  mix-blend-mode: multiply;
+  animation: stamp 0.28s cubic-bezier(0.3, 1.4, 0.5, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stamp {
+    animation: none !important;
+  }
+  .drifting,
+  .thump,
+  .sway,
+  .confetti,
+  .settle {
+    animation: none !important;
+  }
+  .flip-inner {
+    transition: none;
+  }
+  .tilt-l,
+  .tilt-r,
+  .tilt-l2 {
+    transform: none;
+  }
 }
