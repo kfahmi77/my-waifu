@@ -4,13 +4,13 @@ import { useEffect, useState } from "react";
 import { InkButton, InkHeart, type StepProps } from "./shared";
 
 // ✏️ Ganti isi surat ini dengan kata-katamu sendiri biar lebih personal
-const LETTER = `Ica sayang,
+const LETTER = `Ica Sweetheart,
 
-Maaf ya udah bikin kamu kecewa. Aku nggak mau cari alasan, aku salah dan aku sadar itu.
+Maaf soal chat kemarin. Bu Egi ngajak bareng ke Bandung, dan aku malah bales "naik baraya?", kayak aku udah siap ikut. Harusnya aku langsung nolak.
 
-Kamu itu orang yang paling penting buat aku. Liat kamu sedih gara-gara aku itu rasanya nggak enak banget.
+Aku ngerti kenapa itu bikin kamu kesel. Kalau kebalik, aku juga pasti nggak suka.
 
-Aku janji bakal belajar jadi lebih baik, lebih dengerin kamu, dan lebih peka.
+Aku udah bilang ke Bu Egi aku nggak ikut. Ke depannya, ajakan kayak gitu aku tolak, dan aku cerita ke kamu duluan.
 
 Kamu nggak harus langsung maafin aku. Tapi aku harap kamu tahu: aku sayang kamu, banget.`;
 

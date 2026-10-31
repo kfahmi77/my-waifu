@@ -7,7 +7,7 @@ import { InkHeart, InkScribble } from "./shared";
 const VOUCHERS = [
   { title: "Traktir boba", desc: "Ukuran large, topping bebas" },
   { title: "Makan sepuasnya", desc: "Kamu yang pilih tempatnya" },
-  { title: "Pijat 30 menit", desc: "Tanpa ngeluh pegel" },
+  { title: "Trip Jogja berdua", desc: "Kamu yang atur, aku yang nyetir" },
   { title: "Movie date", desc: "Film pilihanmu, aku nggak protes" },
   { title: "Kamu menang debat", desc: "Berlaku 1x, tanpa syarat" },
   { title: "Peluk unlimited", desc: "Tidak ada tanggal kedaluwarsa" },
